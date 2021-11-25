@@ -39,6 +39,7 @@ class Autocomplete<T extends Object> extends StatelessWidget {
     this.fieldViewBuilder = _defaultFieldViewBuilder,
     this.onSelected,
     this.optionsMaxHeight = 200.0,
+    this.optionsMaxWidth = 600.0,
     this.optionsViewBuilder,
     this.initialValue,
   }) : assert(displayStringForOption != null),
@@ -73,6 +74,14 @@ class Autocomplete<T extends Object> extends StatelessWidget {
   ///
   /// The default value is set to 200.
   final double optionsMaxHeight;
+  
+  /// The maximum width used for the default Material options list widget.
+  ///
+  /// When [optionsViewBuilder] is `null`, this property sets the maximum width
+  /// that the options widget can occupy.
+  ///
+  /// The default value is set to 600.
+  final double optionsMaxWidth;
 
   /// {@macro flutter.widgets.RawAutocomplete.initialValue}
   final TextEditingValue? initialValue;
@@ -98,6 +107,7 @@ class Autocomplete<T extends Object> extends StatelessWidget {
           onSelected: onSelected,
           options: options,
           maxOptionsHeight: optionsMaxHeight,
+          maxOptionsWidth: optionsMaxWidth,
         );
       },
       onSelected: onSelected,
@@ -140,6 +150,7 @@ class _AutocompleteOptions<T extends Object> extends StatelessWidget {
     required this.onSelected,
     required this.options,
     required this.maxOptionsHeight,
+    required this.maxOptionsWidth,
   }) : super(key: key);
 
   final AutocompleteOptionToString<T> displayStringForOption;
@@ -147,7 +158,7 @@ class _AutocompleteOptions<T extends Object> extends StatelessWidget {
   final AutocompleteOnSelected<T> onSelected;
 
   final Iterable<T> options;
-  final double maxOptionsHeight;
+  final double maxOptionsHeight, maxOptionsWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +167,8 @@ class _AutocompleteOptions<T extends Object> extends StatelessWidget {
       child: Material(
         elevation: 4.0,
         child: ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: maxOptionsHeight),
+          constraints: BoxConstraints(
+            maxHeight: maxOptionsHeight, maxWidth: maxOptionsWidth),
           child: ListView.builder(
             padding: EdgeInsets.zero,
             shrinkWrap: true,
